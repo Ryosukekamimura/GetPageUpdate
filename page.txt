@@ -1,0 +1,22 @@
+[<ul class="pico_list_contents">
+<li><a href="http://gifu-handball.jp/modules/pico/index.php/content0056.html">
+			平成30年度Ｃ・Ｄ級審判資格取得案内
+		</a>
+</li>
+<li><a href="http://gifu-handball.jp/modules/pico/index.php/content0081.html">
+			平成31年度C・D級審判資格取得案内
+		</a>
+</li>
+<li><a href="http://gifu-handball.jp/modules/pico/index.php/content0108.html">
+			令和２年度Ｃ-Ｄ級審判申請案内
+		</a>
+</li>
+<li><a href="http://gifu-handball.jp/modules/pico/index.php/content0111.html">
+			【令和２年度公認審判員登録更新について】
+		</a>
+</li>
+<li><a href="http://gifu-handball.jp/modules/pico/index.php/content0112.html">
+			【令和２年度審判講習会延期中止のお知らせ及び資料研修のお願い】
+		</a>
+</li>
+</ul>]
