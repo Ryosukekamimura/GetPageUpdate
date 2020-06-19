@@ -3,15 +3,17 @@ import re
 from bs4 import BeautifulSoup
 from linebot import LineBotApi
 from linebot.models import TextSendMessage
+import schedule
+import time
 
 import access_token
 
-
-#TODO:gitignoreに
-#TODO: LINE_CHANNEL_ACCESS_TOKENを設定
+#LINEトークン設定
 LINE_CHANNEL_ACCESS_TOKEN = access_token.AccessToken.CHANNEL_ACCESS_TOKEN
 line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
 
+
+#Websiteの要素を抜き出す関数
 def get_website():
     url = 'http://gifu-handball.jp/modules/pico/index.php/category0022.html'
     file = 'page.txt'
@@ -39,13 +41,14 @@ def get_website():
         f.close()
         return True
 
-
+#LINEに通知する関数
 def push_line(str):
     #TODO: user_idを設定
     user_id = access_token.AccessToken.USER_ID
     messages = TextSendMessage(str)
     line_bot_api.push_message(user_id, messages=messages)
 
+#パターンを判定する関数
 def pattern_matching(str):
     #<aから始まって、<a 任意の1文字、0回以上の繰り返し、が0または1回、>
     html = re.sub('<a.*?>|</a>','', str)
@@ -53,7 +56,7 @@ def pattern_matching(str):
     results = re.findall(pattern, html, re.S)
     return results
 
-if __name__ == "__main__":
+def main():
     if(get_website()):
         f = open('page.txt')
         data = f.read()
@@ -70,3 +73,9 @@ if __name__ == "__main__":
     else:
         push_line('更新はないです。')
         print('All code is done.')
+
+#毎日15時に実行する
+schedule.every().day.at("15:00").do(main)
+while True:
+    schedule.run_pending()
+    time.sleep(1)
