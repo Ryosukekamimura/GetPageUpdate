@@ -1,5 +1,12 @@
 import requests
 from bs4 import BeautifulSoup
+from linebot import LineBotApi
+from linebot.models import TextSendMessage
+
+#TODO:gitignoreに
+#TODO: LINE_CHANNEL_ACCESS_TOKENを設定
+LINE_CHANNEL_ACCESS_TOKEN = ""
+line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
 
 def get_website():
     url = 'http://gifu-handball.jp/modules/pico/index.php/category0022.html'
@@ -27,6 +34,17 @@ def get_website():
         f.close()
         return True
 
+
+def push_line(str):
+    #TODO: user_idを設定
+    user_id = ""
+    messages = TextSendMessage(str)
+    line_bot_api.push_message(user_id, messages=messages)
+
+
 if __name__ == "__main__":
     if(get_website()):
-        print("取得できました")
+        f = open('page.txt', 'r')
+        #LINEに通知
+        push_line(f)
+        f.close()
