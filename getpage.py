@@ -1,11 +1,15 @@
 import requests
+import re
 from bs4 import BeautifulSoup
 from linebot import LineBotApi
 from linebot.models import TextSendMessage
 
+import access_token
+
+
 #TODO:gitignoreに
 #TODO: LINE_CHANNEL_ACCESS_TOKENを設定
-LINE_CHANNEL_ACCESS_TOKEN = ""
+LINE_CHANNEL_ACCESS_TOKEN = access_token.AccessToken.CHANNEL_ACCESS_TOKEN
 line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
 
 def get_website():
@@ -15,9 +19,10 @@ def get_website():
     res.raise_for_status()
     soup = BeautifulSoup(res.text, 'html.parser')
 
+    #.pico_list_contentsクラスから取得
     elems = soup.select('.pico_list_contents')
     str_elems = str(elems)
-    print(str_elems)
+
 
     #old_elemsを読み取る
     try:
@@ -37,14 +42,31 @@ def get_website():
 
 def push_line(str):
     #TODO: user_idを設定
-    user_id = ""
+    user_id = access_token.AccessToken.USER_ID
     messages = TextSendMessage(str)
     line_bot_api.push_message(user_id, messages=messages)
 
+def pattern_matching(str):
+    #<aから始まって、<a 任意の1文字、0回以上の繰り返し、が0または1回、>
+    html = re.sub('<a.*?>|</a>','', str)
+    pattern = '<li.*?>(.*?)</li>'
+    results = re.findall(pattern, html, re.S)
+    return results
 
 if __name__ == "__main__":
     if(get_website()):
-        f = open('page.txt', 'r')
-        #LINEに通知
-        push_line(f)
+        f = open('page.txt')
+        data = f.read()
         f.close()
+        pattern_matching(data)
+        results = pattern_matching(data)
+
+        send_messages = ''
+        for result in results:
+            send_messages += result
+        #LINEに通知
+        #すべてのメッセージをLINEに送信
+        push_line(send_messages)
+    else:
+        push_line('更新はないです。')
+        print('All code is done.')
