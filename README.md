@@ -1,5 +1,5 @@
 # GetPageUpdate
-PythonでWebPageの更新を取得し、SlackやLINEに通知したいと思ってます
+PythonでWebPageの更新を取得し、LINEBotから通知することができました！
 
 
 <img src="https://github.com/Ryosukekamimura/GetPageUpdate/blob/master/image.png" width="512" height="512">
